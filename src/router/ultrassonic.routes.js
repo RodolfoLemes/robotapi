@@ -8,3 +8,5 @@ const routes = express.Router()
 routes.get('/init', UltrassonicController.init)
 routes.get('/getMeasure', UltrassonicController.getMeasure)
 routes.get('/stop', UltrassonicController.stop)
+
+module.exports = routes

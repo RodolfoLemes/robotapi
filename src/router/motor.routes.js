@@ -12,3 +12,5 @@ routes.get('/shutdown', MotorController.shutdown)
 routes.get('/lock', MotorController.lock)
 routes.get('/setPwm', MotorController.setPwm)
 routes.get('/getPwm', MotorController.getPwm)
+
+module.exports = routes
