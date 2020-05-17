@@ -57,5 +57,5 @@ module.exports = {
         const pwmValueB = motorB.pwmValue
 
         res.send({ pwmValueA, pwmValueB })
-    }
+    },
 }

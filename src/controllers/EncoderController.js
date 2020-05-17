@@ -32,5 +32,23 @@ module.exports = {
         }
 
         return res.send(true)
+    },
+
+    setToInitialPosition(req, res) {
+        const { motor = -1 } = req.body
+
+        if(motor == -1) {
+            // Seta ambos os motores
+            encoderA.initialPosition()
+            encoderB.initialPosition()
+        } else if(motor == 'A') {
+            // Seta apenas o motor A
+            encoderA.initialPosition()
+        } else if (motor == 'B') {
+            // Seta apenas o motor B
+            encoderB.initialPosition()
+        }
+
+        return res.send(true)
     }
 }

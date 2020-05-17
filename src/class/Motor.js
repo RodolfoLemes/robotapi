@@ -13,7 +13,7 @@ class Motor {
     }
 
     setPwmValue(pwmValue) {
-        if(pwmValue != -1) {
+        if(pwmValue > 0 && pwmValue < 256) {
             this.pwmValue = pwmValue
         }
     }

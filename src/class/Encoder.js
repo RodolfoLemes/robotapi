@@ -43,6 +43,21 @@ class Encoder {
         this.distance = 0
     }
 
+    initialPosition() {
+        this.motor.shutdown()
+        this.motor.pwmValue(122)
+        this.reset()
+        
+        this.motor.forward()
+        while(true) {
+            let cont = encoderA.getRealCont()
+            if(cont > 1) {
+                this.motor.shutdown()
+                break
+            }
+        }
+    }
+
 }
 
 module.exports = Encoder

@@ -14,7 +14,8 @@ const encoderB = new Encoder(motorB, 17)
 
 console.log('Objetos criados')
 
-process.on('SIGINT', function () { //on ctrl+c
+// Função para desligar o servidor quando pressionado ctrl+c
+process.on('SIGINT', function () {
 	console.log('Servidor desligando')
     motorA.shutdown()
     motorA.setPwmValue(0)
