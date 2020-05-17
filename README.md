@@ -2,7 +2,8 @@
 API para controle da base robótica
 
 ## A fazer:
-- [ ] Instalar biblioteca *serialport* para comunicação Arduino -> Raspberry
+- [ ] Instalar biblioteca *serialport* para comunicação Arduino -> Raspberry.
+Precisa de divisor de tensão 5V -> 3.3V no TX do Arduino para o RX do raspberry
 
 ```js
 var SerialPort = require('serialport');
@@ -25,6 +26,6 @@ port.on('error', function(err) {
 
 - [ ] Programar *Arduino* para receber informações sobre a tensão da bateria
 
-- [ ] Programar a API para se comunicar com o Arduino, pedindo informações da bateria
+- [x] Programar a API para se comunicar com o Arduino, pedindo informações da bateria
 
 - [ ] Colocar LEDs indicadores, controlados pelo Arduino, para o nível de tensão da bateria

@@ -1,6 +1,7 @@
 const Motor = require('./class/Motor')
 const Ultrassonic = require('./class/Ultrassonic')
 const Encoder = require('./class/Encoder')
+const Arduino = require('./class/Arduino')
 
 const motorA = new Motor(4, 27, 12)
 const motorB = new Motor(23, 24, 13)
@@ -11,6 +12,8 @@ const ultrassonicC = new Ultrassonic(16, 20)
 
 const encoderA = new Encoder(motorA, 18)
 const encoderB = new Encoder(motorB, 17)
+
+const arduino = new Arduino()
 
 console.log('Objetos criados')
 
@@ -23,8 +26,9 @@ process.on('SIGINT', function () {
     motorB.setPwmValue(0)
     ultrassonicA.stop()
     ultrassonicB.stop()
+    arduino.closeSerial()
     console.log('Servidor desligado')
     process.exit(); //exit completely
 });
 
-module.exports = { motorA, motorB, ultrassonicA, ultrassonicB, ultrassonicC, encoderA, encoderB }
+module.exports = { motorA, motorB, ultrassonicA, ultrassonicB, ultrassonicC, encoderA, encoderB, arduino }
