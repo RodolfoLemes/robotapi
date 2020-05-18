@@ -25,6 +25,7 @@ port.on('error', function(err) {
 ```
 
 - [ ] Programar *Arduino* para receber informações sobre a tensão da bateria
+
 Da pra fazer isso utilizando o algoritmo de descarregamento de bateria, armazenar na EEPROM
 os ultimos dados recebidos para utilizar na medição.
 

@@ -2,16 +2,32 @@ const { motorA, motorB } = require('../Setup')
 
 module.exports = {
     forward(req, res) {
-        motorA.forward()
-        motorB.forward()
+        const { motor = -1 } = req.query
+
+        if(motor == -1) {
+            motorA.forward()
+            motorB.forward()
+        } else if(motor == 'A') {
+            motorA.forward()
+        } else if(motor == 'B') {
+            motorB.forward()
+        }
 
         return res.send(true)
     },
 
     backward(req, res) {
-        motorA.backward()
-        motorB.backward()
+        const { motor = -1 } = req.query
 
+        if(motor == -1) {
+            motorA.backward()
+            motorB.backward()
+        } else if(motor == 'A') {
+            motorA.backward()
+        } else if(motor == 'B') {
+            motorB.backward()
+        }
+        
         return res.send(true)
     },
 

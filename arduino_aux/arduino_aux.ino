@@ -4,6 +4,8 @@
 
 #define pinCurrentSensor A1
 #define pinVoltageMeasure A0
+#define ledGoodBattery 1
+#define ledBadBattery 2
 
 float capacity = 0, value, voltage, current, time = 0;
 boolean x = false;
@@ -55,20 +57,21 @@ double currentMeasure(void) {
   Voltage = (RawValue / 1024.0) * 5000; // Gets you mV
   Amps = ((Voltage - ACSoffset) / mVperAmp);
 
-  return Amps
+  return Amps;
 }
 
 void measure (void) {
   value = analogRead(pinVoltageMeasure);
   voltage = value / 1024 * 5.0;
+  voltage = map(voltage, 0, 5.0, 0, 12.6)
   current = currentMeasure();
   capacity = capacity + current / 3600;
   time++;
 
   String measures = capacity + '/' + time;
-
+  String measuresSerial = voltage + '/' + current + '/' + capacity + '/' + time;
   writeString(0, measures);
-  Serial.write(measures);
+  Serial.write(measuresSerial);
 }
 
 // Não tenho ideia do que essa função faça
@@ -79,11 +82,15 @@ ISR(TIMER1_OVF_vect) {
   measure();
 }
 
+// SETUP --- LOOP //
 void setup() {
   TIMSK1 = 0x01; // enabled global and timer overflow interrupt;
   TCCR1A = 0x00; // normal operation page 148 (mode0);
   TCNT1 = 0x0BDC; // set initial value to remove time error (16bit counter register)
   TCCR1B = 0x04; // start timer/ set clock
+
+  pinMode(ledGoodBattery, OUTPUT);
+  pinMode(ledBadBattery, OUTPUT);
 
   measuresSaved = read_String(0);
   if(measuresSaved[0] != 0) {
@@ -91,8 +98,16 @@ void setup() {
   }
   
   Serial.begin(9600);
-};
+}
 
 void loop () {
   delay(2000);
-};
+
+  if(voltage <= 12.6 || voltage >= 11.1) {
+    digitalWrite(ledGoodBattery, HIGH);
+    digitalWrite(ledBadBattery, LOW);
+  } else {
+    digitalWrite(ledGoodBattery, LOW);
+    digitalWrite(ledBadBattery, HIGH);
+  }
+}

@@ -11,13 +11,25 @@ class Arduino {
             }
         })
 
-        this.battery = '0'
+        // Configurar corretamente essa variavel
+        this.BATTERY_CAPACITY = 20000
+
+        this.battery = 0 
+        this.voltage = 0
+        this.current = 0
+        this.capacity = 0
     }
 
     startSerial() {
         this.port.on('readable', () => {
             console.log(this.port.read())
-            this.battery = this.port.read()
+            let message = this.port.read()
+            let measures = message.split('/')
+            this.voltage = measures[0]
+            this.current = measures[1]
+            this.capacity = measures[2]
+
+            this.battery = this.capacity / this.BATTERY_CAPACITY
         })
     }
 

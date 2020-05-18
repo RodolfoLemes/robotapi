@@ -8,5 +8,6 @@ const routes = express.Router()
 routes.get('/startSerial', ArduinoController.startSerialCommunication)
 routes.get('/closeSerial', ArduinoController.closeSerialCommunication)
 routes.get('/sendMessage', ArduinoController.sendMessage)
+routes.get('/getMeasures', ArduinoController.getMeasures)
 
 module.exports = routes
