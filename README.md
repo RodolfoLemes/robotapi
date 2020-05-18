@@ -1,30 +1,27 @@
 # robotapi
-API para controle da base robótica
+API para controle da base robótica :octocat:
 
-## A fazer:
+## Afazeres:
+- [x] Desenvolver a estrutura da API com NodeJS, utilizando Express.
+
+- [x] Criar classes do motor, encoder e ultrassônico.
+
+- [x] Criar os controllers das classes e o roteamento.
+
+- [ ] Testar **TODAS** as requisições. :fearful:
+
+- [x] Instalar *pigpio* no *Raspberry Pi*.
+
 - [ ] Instalar biblioteca *serialport* para comunicação Arduino -> Raspberry.
+
 Precisa de divisor de tensão 5V -> 3.3V no TX do Arduino para o RX do raspberry
 
 ```js
-var SerialPort = require('serialport');
-var port = new SerialPort('/dev/tty-usbserial1');
- 
-port.on('open', function() {
-  port.write('main screen turn on', function(err) {
-    if (err) {
-      return console.log('Error on write: ', err.message);
-    }
-    console.log('message written');
-  });
-});
- 
-// open errors will be emitted as an error event 
-port.on('error', function(err) {
-  console.log('Error: ', err.message);
-});
+const SerialPort = require('serialport');
+const port = new SerialPort('/dev/ttyAMA0');
 ```
 
-- [ ] Programar *Arduino* para receber informações sobre a tensão da bateria
+- [x] Programar *Arduino* para receber informações sobre a tensão da bateria
 
 Da pra fazer isso utilizando o algoritmo de descarregamento de bateria, armazenar na EEPROM
 os ultimos dados recebidos para utilizar na medição.

@@ -1,13 +1,13 @@
-// Very simple Arduino Lithium-ion battery capacity tester
-// from electronicsblog.net
+// Parte desse código foi dispobinilizado pela electronicsblog.net
 #include <EEPROM.h>
 
-#define pinCurrentSensor A1
-#define pinVoltageMeasure A0
+#define pinCurrentSensor 1
+#define pinVoltageMeasure 3
 #define ledGoodBattery 1
 #define ledBadBattery 2
 
-float capacity = 0, value, voltage, current, time = 0;
+float capacity = 0, voltage, current, time = 0;
+float value;
 boolean x = false;
 int mVperAmp = 66; 
 int RawValue = 0;
@@ -23,7 +23,6 @@ void writeString(int add, String data){
     EEPROM.write(add+i,data[i]);
   }
   EEPROM.write(add+_size,'\0');   //Add termination null character for String Data
-  EEPROM.commit();
 }
 
 String read_String(int add){
@@ -61,17 +60,18 @@ double currentMeasure(void) {
 }
 
 void measure (void) {
+  // A leitura de tensão esta "errada", mas foi calibrada para se aproximar do real
+  // Divisor de tensão: Vin => 114,7k - Vout - 68k - GND
   value = analogRead(pinVoltageMeasure);
-  voltage = value / 1024 * 5.0;
-  voltage = map(voltage, 0, 5.0, 0, 12.6)
+  voltage = value / 1023 * 12.60;
   current = currentMeasure();
   capacity = capacity + current / 3600;
   time++;
 
-  String measures = capacity + '/' + time;
-  String measuresSerial = voltage + '/' + current + '/' + capacity + '/' + time;
+  String measures = String(capacity) + '/' + String(time);
+  String measuresSerial = String(voltage) + '/' + String(current) + '/' + String(capacity) + '/' + String(time);
   writeString(0, measures);
-  Serial.write(measuresSerial);
+  Serial.println(measuresSerial);
 }
 
 // Não tenho ideia do que essa função faça
@@ -89,6 +89,8 @@ void setup() {
   TCNT1 = 0x0BDC; // set initial value to remove time error (16bit counter register)
   TCCR1B = 0x04; // start timer/ set clock
 
+  Serial.begin(9600);
+
   pinMode(ledGoodBattery, OUTPUT);
   pinMode(ledBadBattery, OUTPUT);
 
@@ -96,13 +98,12 @@ void setup() {
   if(measuresSaved[0] != 0) {
     getProperties();
   }
-  
-  Serial.begin(9600);
 }
 
 void loop () {
   delay(2000);
 
+  // Falta colocar esses leds
   if(voltage <= 12.6 || voltage >= 11.1) {
     digitalWrite(ledGoodBattery, HIGH);
     digitalWrite(ledBadBattery, LOW);
