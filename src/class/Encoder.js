@@ -45,7 +45,7 @@ class Encoder {
 
     initialPosition() {
         this.motor.shutdown()
-        this.motor.pwmValue(122)
+        this.motor.setPwmValue(122)
         this.reset()
         
         this.motor.forward()

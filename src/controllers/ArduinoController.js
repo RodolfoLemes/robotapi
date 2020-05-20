@@ -13,7 +13,7 @@ module.exports = {
         return res.send(true)
     },
 
-    sendMessage(res, res) {
+    sendMessage(req, res) {
         const { message } = req.query
 
         arduino.sendMessage(message)
