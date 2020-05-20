@@ -45,12 +45,12 @@ class Encoder {
 
     initialPosition() {
         this.motor.shutdown()
-        this.motor.pwmValue(122)
+        this.motor.setPwmValue(122)
         this.reset()
         
         this.motor.forward()
         while(true) {
-            let cont = encoderA.getRealCont()
+            let cont = this.getRealCont()
             if(cont > 1) {
                 this.motor.shutdown()
                 break

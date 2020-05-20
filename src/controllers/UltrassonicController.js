@@ -15,7 +15,7 @@ module.exports = {
 
         if(ultrassonic == -1) {
             Promise.all([ultrassonicA.getMeasure(), ultrassonicB.getMeasure(), ultrassonicC.getMeasure()])
-                .then(distances => res.send({ distance }))
+                .then(distances => res.send({ distances }))
         } else if(ultrassonic == 'A') {
             let distance = await ultrassonicA.getMeasure()
 
