@@ -50,7 +50,7 @@ class Encoder {
         
         this.motor.forward()
         while(true) {
-            let cont = encoderA.getRealCont()
+            let cont = this.getRealCont()
             if(cont > 1) {
                 this.motor.shutdown()
                 break

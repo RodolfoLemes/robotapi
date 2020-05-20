@@ -10,8 +10,8 @@ const ultrassonicA = new Ultrassonic(5, 6)
 const ultrassonicB = new Ultrassonic(19, 26)
 const ultrassonicC = new Ultrassonic(16, 20)
 
-const encoderA = new Encoder(motorA, 18)
-const encoderB = new Encoder(motorB, 17)
+const encoderA = new Encoder(motorB, 18)
+const encoderB = new Encoder(motorA, 17)
 
 const arduino = new Arduino()
 
