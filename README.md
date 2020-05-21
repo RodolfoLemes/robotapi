@@ -12,13 +12,13 @@ API para controle da base robótica :octocat:
 
 - [x] Instalar *pigpio* no *Raspberry Pi*.
 
-- [ ] Instalar biblioteca *serialport* para comunicação Arduino -> Raspberry.
+- [x] Instalar biblioteca *serialport* para comunicação Arduino -> Raspberry.
 
 Precisa de divisor de tensão 5V -> 3.3V no TX do Arduino para o RX do raspberry
 
 ```js
 const SerialPort = require('serialport');
-const port = new SerialPort('/dev/ttyAMA0');
+const port = new SerialPort('/dev/serial0');
 ```
 
 - [x] Programar *Arduino* para receber informações sobre a tensão da bateria

@@ -6,11 +6,12 @@
 #define ledGoodBattery 1
 #define ledBadBattery 2
 
+int SAMPLES = 12;
 float capacity = 0, voltage, current, time = 0;
 float value;
 boolean x = false;
 int mVperAmp = 66; 
-int RawValue = 0;
+float RawValue = 0;
 int ACSoffset = 2500;
 double Voltage = 0;
 double Amps = 0;
@@ -51,8 +52,18 @@ void getProperties(void) {
   }
 }
 
+float averageAnalogRead(uint8_t analogPin) {
+  float total = 0;
+  for(int i = 0; i < SAMPLES; i++) {
+    total = total + 1.0*analogRead(analogPin);
+    delay(5)
+  }
+
+  return total / (float)SAMPLES;
+}
+
 double currentMeasure(void) {
-  RawValue = analogRead(pinCurrentSensor);
+  RawValue = averageAnalogRead(pinCurrentSensor);
   Voltage = (RawValue / 1024.0) * 5000; // Gets you mV
   Amps = ((Voltage - ACSoffset) / mVperAmp);
 
@@ -62,8 +73,8 @@ double currentMeasure(void) {
 void measure (void) {
   // A leitura de tensão esta "errada", mas foi calibrada para se aproximar do real
   // Divisor de tensão: Vin => 114,7k - Vout - 68k - GND
-  value = analogRead(pinVoltageMeasure);
-  voltage = value / 1023 * 12.60;
+  value = averageAnalogRead(pinVoltageMeasure);
+  voltage = value / 1024.0 * 12.60;
   current = currentMeasure();
   capacity = capacity + current / 3600;
   time++;

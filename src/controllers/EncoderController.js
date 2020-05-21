@@ -2,9 +2,22 @@ const { encoderA, encoderB } = require('../Setup')
 
 module.exports = {
     get(req, res) {
-        const { encoder } = req.query
+        const { encoder = -1 } = req.query
 
-        if(encoder == 'A') {
+        if(encoder == -1) {
+            let distance = []
+            let cont = []
+            let realCont = []
+            let encoders = [encoderA, encoderB]
+
+            encoders.map(element => {
+                distance.push(element.getDistance())
+                cont.push(element.getCont())
+                realCont.push(element.getRealCont())
+            })
+
+            return res.send({ distance, cont, realCont })
+        } else if(encoder == 'A') {
             let distance = encoderA.getDistance()
             let cont = encoderA.getCont()
             let realCont = encoderA.getRealCont()

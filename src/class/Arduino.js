@@ -1,10 +1,11 @@
 const SerialPort = require('serialport')
+const Readline = require('@serialport/parser-readline')
 
 // Classe responsavel por estabelecer toda a comunicação com o arduino
 class Arduino {
     constructor() {
-        this.port = new SerialPort("/dev/ttyAMA0", { 
-            baudRate: 115200
+        this.port = new SerialPort("/dev/serial0", { 
+            baudRate: 9600
         }, function (err) {
             if(err) {
                 return console.log('Error: ' + err.message)
@@ -21,10 +22,9 @@ class Arduino {
     }
 
     startSerial() {
-        this.port.on('readable', () => {
-            console.log(this.port.read())
-            let message = this.port.read()
-            let measures = message.split('/')
+        const parser = this.port.pipe(new Readline({ delimiter: '\r\n'}))
+        parser.on('data', data => {
+            let measures = data.split('/')
             this.voltage = measures[0]
             this.current = measures[1]
             this.capacity = measures[2]
