@@ -1,21 +1,27 @@
 # robotapi
 API para controle da base robótica :octocat:
 
-## Afazeres:
+### Afazeres:
 
 - [ ] Testar **TODAS** as requisições. :fearful:
-    - [x] Quase todas foram testadas
-    - [ ] Falta resolver a requisição de calibragem
+    - [x] Quase todas foram testadas.
+    - [ ] Falta resolver a requisição de calibragem.
 
-- [ ] Colocar LEDs indicadores, controlados pelo *Arduino*, para o nível de tensão da bateria
+- [ ] Colocar LEDs indicadores, controlados pelo *Arduino*, para o nível de tensão da bateria.
 
-- [ ] Resolver problema com a função voltmetro do *Arduino*
+- [ ] Resolver problema com a função voltimetro do *Arduino*.
 
-- [ ] Realizar testes de multiplas calls na API
+- [ ] Realizar testes de multiplas calls na API.
+
+- [ ] Desenvolver controllers e rotas para executar CMD no *Raspberry Pi*.
+    - [ ] Desligar e reiniciar.
+    - [ ] Comandos gerais.
+
+- [ ] Escrever documentação.
 
 - [ ] Só? 
 
-## Resolvidos
+### Resolvidos
 - [x] Desenvolver a estrutura da API com NodeJS, utilizando Express.
 
 - [x] Criar classes do motor, encoder e ultrassônico.
