@@ -1,29 +1,37 @@
 // Parte desse código foi dispobinilizado pela electronicsblog.net
 #include <EEPROM.h>
 
-#define pinCurrentSensor 1
-#define pinVoltageMeasure 3
-#define ledGoodBattery 1
-#define ledBadBattery 2
+#define pinCurrentSensor 1 // Analog Pin A1
+#define pinVoltageMeasure 3 // Analog Pin A3
+#define ledGoodBattery 1  //Digital Pin 1
+#define ledBadBattery 2 // Digital Pin 2
+#define ledCharged 3  // Digital Pin 3 
 
-int SAMPLES = 12;
-float capacity = 0, voltage, current, time = 0;
-float value;
-boolean x = false;
-int mVperAmp = 66; 
+// Constants
+const int SAMPLES = 12;
+const int mVperAmp = 66; 
+const int ACSoffset = 2500;
+
+// Variables
 float RawValue = 0;
-int ACSoffset = 2500;
+float capacity = 0;
+float time = 0;
+float voltage;
+float current;
+float value;
 double Voltage = 0;
 double Amps = 0;
+boolean x = false;
 String measuresSaved;
 
+// Functions EEPROM
 void writeString(int add, String data){
   int _size = data.length();
   int i;
   for(i=0;i<_size;i++) {
     EEPROM.write(add+i,data[i]);
   }
-  EEPROM.write(add+_size,'\0');   //Add termination null character for String Data
+  EEPROM.write(add+_size,'\0');
 }
 
 String read_String(int add){
@@ -51,7 +59,9 @@ void getProperties(void) {
     } 
   }
 }
+// End Functions EEPROM
 
+// Função que pega a media de medidas de pinos analógicos
 float averageAnalogRead(uint8_t analogPin) {
   float total = 0;
   for(int i = 0; i < SAMPLES; i++) {
@@ -62,6 +72,7 @@ float averageAnalogRead(uint8_t analogPin) {
   return total / (float)SAMPLES;
 }
 
+// Função responsavel pela aquisição do valor de corrente indicado pelo sensor de corrent ACS712
 double currentMeasure(void) {
   RawValue = averageAnalogRead(pinCurrentSensor);
   Voltage = (RawValue / 1024.0) * 5000; // Gets you mV
@@ -70,9 +81,8 @@ double currentMeasure(void) {
   return Amps;
 }
 
-void measure (void) {
-  // A leitura de tensão esta "errada", mas foi calibrada para se aproximar do real
-  // Divisor de tensão: Vin => 114,7k - Vout - 68k - GND
+// Função multimetro, também responsavel por calcular a capacidade da bateria, salvar na EEPROM e enviar via Serial
+void measure(void) {
   value = averageAnalogRead(pinVoltageMeasure);
   voltage = value / 1024.0 * 12.60;
   current = currentMeasure();
@@ -102,6 +112,7 @@ void setup() {
 
   Serial.begin(9600);
 
+  pinMode(ledCharged, OUTPUT);
   pinMode(ledGoodBattery, OUTPUT);
   pinMode(ledBadBattery, OUTPUT);
 
@@ -111,14 +122,20 @@ void setup() {
   }
 }
 
-void loop () {
+void loop() {
   delay(2000);
 
   // Falta colocar esses leds
-  if(voltage <= 12.6 || voltage >= 11.1) {
+  if(voltage <= 12.6 || voltage >= 12.2) {
+    digitalWrite(ledCharged, HIGH);
+    digitalWrite(ledGoodBattery, LOW);
+    digitalWrite(ledBadBattery, LOW);
+  } else if(voltage <= 12.1 || voltage >= 11.1) {
+    digitalWrite(ledCharged, LOW);
     digitalWrite(ledGoodBattery, HIGH);
     digitalWrite(ledBadBattery, LOW);
   } else {
+    digitalWrite(ledCharged, LOW);
     digitalWrite(ledGoodBattery, LOW);
     digitalWrite(ledBadBattery, HIGH);
   }
