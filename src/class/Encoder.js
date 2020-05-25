@@ -22,7 +22,7 @@ class Encoder {
                     this.motor.shutdown()
                     this.initMode = false
                 } else {
-                    console.log(level + '--' + tick)
+                    console.log(this.motor.motor + ' ' + tick)
                     this.cont++
                     this.setDistance()
                 }
@@ -31,7 +31,7 @@ class Encoder {
     }
 
     setDistance() {
-        this.distance = DISTANCE * (this.cont / 2)
+        this.distance = DISTANCE * this.cont
     }
 
     getDistance() {
@@ -39,7 +39,7 @@ class Encoder {
     }
 
     getCont() {
-        return (this.cont / 2)
+        return this.cont
     }
 
     getRealCont() {
