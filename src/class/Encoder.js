@@ -15,10 +15,18 @@ class Encoder {
             edge: Gpio.FALLING_EDGE
         })
 
+        this.initMode = false
         this.gpio.on('interrupt', (level, tick) => {
-            console.log(level + '--' + tick)
-            this.cont++
-            this.setDistance()
+            if(level == 0) {
+                if(this.initMode) {
+                    this.motor.shutdown()
+                    this.initMode = false
+                } else {
+                    console.log(level + '--' + tick)
+                    this.cont++
+                    this.setDistance()
+                }
+            }
         })
     }
 
@@ -47,15 +55,8 @@ class Encoder {
         this.motor.shutdown()
         this.motor.setPwmValue(122)
         this.reset()
-        
+        this.initMode = true
         this.motor.forward()
-        while(true) {
-            let cont = this.getRealCont()
-            if(cont > 1) {
-                this.motor.shutdown()
-                break
-            }
-        }
     }
 
 }
