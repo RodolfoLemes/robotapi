@@ -3,15 +3,16 @@ const Ultrassonic = require('./class/Ultrassonic')
 const Encoder = require('./class/Encoder')
 const Arduino = require('./class/Arduino')
 
-const motorA = new Motor(4, 27, 12)
-const motorB = new Motor(23, 24, 13)
+const motorA = new Motor(4, 27, 12, 'A')
+const motorB = new Motor(23, 24, 13, 'B')
 
 const ultrassonicA = new Ultrassonic(5, 6)
 const ultrassonicB = new Ultrassonic(19, 26)
 const ultrassonicC = new Ultrassonic(16, 20)
 
-const encoderA = new Encoder(motorB, 18)
-const encoderB = new Encoder(motorA, 17)
+const encoderA = new Encoder(motorA, 17)
+const encoderB = new Encoder(motorB, 18)
+
 
 const arduino = new Arduino()
 

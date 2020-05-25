@@ -3,19 +3,19 @@ API para controle da base robótica :octocat:
 
 ### Afazeres:
 
-- [ ] Testar **TODAS** as requisições. :fearful:
+- [x] Testar **TODAS** as requisições. :fearful:
     - [x] Quase todas foram testadas.
-    - [ ] Falta resolver a requisição de calibragem.
+    - [x] Falta resolver a requisição de calibragem.
 
 - [ ] Colocar LEDs indicadores, controlados pelo *Arduino*, para o nível de tensão da bateria.
 
-- [ ] Resolver problema com a função voltimetro do *Arduino*.
+- [x] Resolver problema com a função voltimetro do *Arduino*.
 
 - [ ] Realizar testes de multiplas calls na API.
 
-- [ ] Desenvolver controllers e rotas para executar CMD no *Raspberry Pi*.
-    - [ ] Desligar e reiniciar.
-    - [ ] Comandos gerais.
+- [x] Desenvolver controllers e rotas para executar CMD no *Raspberry Pi*.
+    - [x] Desligar e reiniciar.
+    - [x] Comandos gerais.
 
 - [ ] Escrever documentação.
 

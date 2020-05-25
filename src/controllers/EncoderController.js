@@ -48,8 +48,8 @@ module.exports = {
     },
 
     setToInitialPosition(req, res) {
-        const { motor = -1 } = req.body
-
+        const { motor = -1 } = req.query
+        console.log(motor)
         if(motor == -1) {
             // Seta ambos os motores
             encoderA.initialPosition()

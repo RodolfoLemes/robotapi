@@ -39,9 +39,9 @@ module.exports = {
 
     async get(req, res) {
         const { string } = req.query
-
+        console.log(string)
         cmd.get(string, (err, data, stderr) => {
-            const string = console.log(err, data, stderr)
+            const string = err +'1'+ data +'2'+ stderr
             return res.send(string)
         })
     }
