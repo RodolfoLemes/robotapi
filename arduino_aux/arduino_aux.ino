@@ -1,11 +1,17 @@
 // Parte desse código foi dispobinilizado pela electronicsblog.net
 #include <EEPROM.h>
+#include <HX711.h>
 
 #define pinCurrentSensor 1 // Analog Pin A1
 #define pinVoltageMeasure 3 // Analog Pin A3
 #define ledGoodBattery 1  //Digital Pin 1
 #define ledBadBattery 2 // Digital Pin 2
 #define ledCharged 3  // Digital Pin 3 
+#define DOUT 6 // Digital pin 6 - DOUT HX711
+#define CLK 7 // Digital pin 7 - DOUT HX711
+
+// Objetos
+HX711 Weight;
 
 // Constants
 const int SAMPLES = 12;
@@ -13,6 +19,7 @@ const int mVperAmp = 66;
 const int ACSoffset = 2500;
 
 // Variables
+float weightCalibration = 34730;
 float RawValue = 0;
 float capacity = 0;
 float time = 0;
@@ -112,6 +119,10 @@ void setup() {
 
   Serial.begin(9600);
 
+  Weight.begin(DOUT, CLK);
+  Weight.set_scale(weightCalibration);
+  Weight.tare()
+
   pinMode(ledCharged, OUTPUT);
   pinMode(ledGoodBattery, OUTPUT);
   pinMode(ledBadBattery, OUTPUT);
@@ -123,8 +134,6 @@ void setup() {
 }
 
 void loop() {
-  delay(2000);
-
   // Falta colocar esses leds
   if(voltage <= 12.6 || voltage >= 12.2) {
     digitalWrite(ledCharged, HIGH);
@@ -138,5 +147,12 @@ void loop() {
     digitalWrite(ledCharged, LOW);
     digitalWrite(ledGoodBattery, LOW);
     digitalWrite(ledBadBattery, HIGH);
+  }
+
+  if(Serial.available()) {
+    char string = Serial.read()
+    if(string == 'W' || string = 'w') {
+      Serial.println(Weight.get_units(), 3)
+    }
   }
 }

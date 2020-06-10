@@ -6,13 +6,13 @@ const Arduino = require('./class/Arduino')
 const motorA = new Motor(4, 27, 12, 'A')
 const motorB = new Motor(23, 24, 13, 'B')
 
-const ultrassonicA = new Ultrassonic(5, 6)
-const ultrassonicB = new Ultrassonic(19, 26)
-const ultrassonicC = new Ultrassonic(16, 20)
+const ultrassonicA = new Ultrassonic(5, 6)      // Direito
+const ultrassonicB = new Ultrassonic(19, 26)    // Esquerda
+const ultrassonicC = new Ultrassonic(16, 20)    // Trás
+const ultrassonicD = new Ultrassonic(22, 21)    // Frente
 
 const encoderA = new Encoder(motorA, 17)
 const encoderB = new Encoder(motorB, 18)
-
 
 const arduino = new Arduino()
 
@@ -32,4 +32,4 @@ process.on('SIGINT', function () {
     process.exit(); //exit completely
 });
 
-module.exports = { motorA, motorB, ultrassonicA, ultrassonicB, ultrassonicC, encoderA, encoderB, arduino }
+module.exports = { motorA, motorB, ultrassonicA, ultrassonicB, ultrassonicC, ultrassonicD, encoderA, encoderB, arduino }

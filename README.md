@@ -3,19 +3,13 @@ API para controle da base robótica :octocat:
 
 ### Afazeres:
 
-- [x] Testar **TODAS** as requisições. :fearful:
-    - [x] Quase todas foram testadas.
-    - [x] Falta resolver a requisição de calibragem.
-
 - [ ] Colocar LEDs indicadores, controlados pelo *Arduino*, para o nível de tensão da bateria.
-
-- [x] Resolver problema com a função voltimetro do *Arduino*.
 
 - [ ] Realizar testes de multiplas calls na API.
 
-- [x] Desenvolver controllers e rotas para executar CMD no *Raspberry Pi*.
-    - [x] Desligar e reiniciar.
-    - [x] Comandos gerais.
+- [ ] Testar código para medir peso sobre o robô.
+    - [ ] Código de calibragem
+    - [ ] Código de obtenção de peso.
 
 - [ ] Escrever documentação.
 
@@ -45,3 +39,13 @@ Da pra fazer isso utilizando o algoritmo de descarregamento de bateria, armazena
 os ultimos dados recebidos para utilizar na medição.
 
 - [x] Programar a API para se comunicar com o *Arduino*, pedindo informações da bateria.
+
+- [x] Desenvolver controllers e rotas para executar CMD no *Raspberry Pi*.
+    - [x] Desligar e reiniciar.
+    - [x] Comandos gerais.
+
+- [x] Resolver problema com a função voltimetro do *Arduino*.
+
+- [x] Testar **TODAS** as requisições. :fearful:
+    - [x] Quase todas foram testadas.
+    - [x] Falta resolver a requisição de calibragem.

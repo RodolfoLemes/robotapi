@@ -1,4 +1,4 @@
-const { ultrassonicA, ultrassonicB, ultrassonicC } = require('../Setup')
+const { ultrassonicA, ultrassonicB, ultrassonicC, ultrassonicD } = require('../Setup')
 
 module.exports = {
     init(req, res) {
@@ -6,6 +6,7 @@ module.exports = {
         ultrassonicA.init()
         ultrassonicB.init()
         ultrassonicC.init()
+        ultrassonicD.init()
 
         return res.send(true)
     },
@@ -14,7 +15,7 @@ module.exports = {
         const { ultrassonic = -1 } = req.query
 
         if(ultrassonic == -1) {
-            Promise.all([ultrassonicA.getMeasure(), ultrassonicB.getMeasure(), ultrassonicC.getMeasure()])
+            Promise.all([ultrassonicA.getMeasure(), ultrassonicB.getMeasure(), ultrassonicC.getMeasure(), ultrassonicD.getMeasure()])
                 .then(distances => res.send({ distances }))
         } else if(ultrassonic == 'A') {
             let distance = await ultrassonicA.getMeasure()
@@ -26,6 +27,10 @@ module.exports = {
             return res.send({ distance })
         } else if (ultrassonic == 'C') {
             let distance = await ultrassonicC.getMeasure()
+
+            return res.send({ distance })
+        } else if(ultrassonic == 'D') {
+            let distance = await ultrassonicD.getMeasure()
 
             return res.send({ distance })
         } else {
