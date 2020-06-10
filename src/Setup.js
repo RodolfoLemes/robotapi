@@ -27,6 +27,8 @@ process.on('SIGINT', function () {
     motorB.setPwmValue(0)
     ultrassonicA.stop()
     ultrassonicB.stop()
+    ultrassonicC.stop()
+    ultrassonicD.stop()
     arduino.closeSerial()
     console.log('Servidor desligado')
     process.exit(); //exit completely
