@@ -4,7 +4,7 @@
 #define CLK   7  
 
 HX711 peso;                // instancia Balança HX711
-float calibration_factor = 39630;     // fator de calibração para teste inicial
+float calibration_factor = 4530;     // fator de calibração para teste inicial
 
 void setup() {
   Serial.begin(9600);  

@@ -21,6 +21,10 @@ module.exports = {
         return res.send(true)
     },
 
+    getMessage(req, res) {
+        return res.send(arduino.message)
+    },
+
     getMeasures(req, res) {
         let voltage = arduino.voltage
         let current = arduino.current

@@ -19,17 +19,23 @@ class Arduino {
         this.voltage = 0
         this.current = 0
         this.capacity = 0
+        this.message = ''
     }
 
     startSerial() {
         const parser = this.port.pipe(new Readline({ delimiter: '\r\n'}))
         parser.on('data', data => {
-            let measures = data.split('/')
-            this.voltage = measures[0]
-            this.current = measures[1]
-            this.capacity = measures[2]
-
-            this.battery = this.capacity / this.BATTERY_CAPACITY
+            console.log(data)
+            if(data.includes('/')) {
+                let measures = data.split('/')
+                this.voltage = measures[0]
+                this.current = measures[1]
+                this.capacity = measures[2]
+    
+                this.battery = this.capacity / this.BATTERY_CAPACITY
+            } else {
+                this.message = data
+            }
         })
     }
 

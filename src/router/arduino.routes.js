@@ -9,5 +9,6 @@ routes.get('/startSerial', ArduinoController.startSerialCommunication)
 routes.get('/closeSerial', ArduinoController.closeSerialCommunication)
 routes.get('/sendMessage', ArduinoController.sendMessage)
 routes.get('/getMeasures', ArduinoController.getMeasures)
+routes.get('/getMessage', ArduinoController.getMessage)
 
 module.exports = routes

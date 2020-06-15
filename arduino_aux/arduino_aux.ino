@@ -4,9 +4,9 @@
 
 #define pinCurrentSensor 1 // Analog Pin A1
 #define pinVoltageMeasure 3 // Analog Pin A3
-#define ledGoodBattery 1  //Digital Pin 1
-#define ledBadBattery 2 // Digital Pin 2
-#define ledCharged 3  // Digital Pin 3 
+#define ledGoodBattery 2  //Digital Pin 1
+#define ledBadBattery 3 // Digital Pin 2
+#define ledCharged 4  // Digital Pin 3 
 #define DOUT 6 // Digital pin 6 - DOUT HX711
 #define CLK 7 // Digital pin 7 - DOUT HX711
 
@@ -19,7 +19,7 @@ const int mVperAmp = 66;
 const int ACSoffset = 2500;
 
 // Variables
-float weightCalibration = 34730;
+float weightCalibration = 4530;
 float RawValue = 0;
 float capacity = 0;
 float time = 0;
@@ -56,6 +56,8 @@ String read_String(int add){
   return String(data);
 }
 
+// End Functions EEPROM
+
 void getProperties(void) {
   for(int i=0; i < measuresSaved.length(); i++) {
     if(measuresSaved[i] == '/') {
@@ -66,14 +68,13 @@ void getProperties(void) {
     } 
   }
 }
-// End Functions EEPROM
 
 // Função que pega a media de medidas de pinos analógicos
 float averageAnalogRead(uint8_t analogPin) {
   float total = 0;
   for(int i = 0; i < SAMPLES; i++) {
     total = total + 1.0*analogRead(analogPin);
-    delay(5)
+    delay(5);
   }
 
   return total / (float)SAMPLES;
@@ -121,7 +122,7 @@ void setup() {
 
   Weight.begin(DOUT, CLK);
   Weight.set_scale(weightCalibration);
-  Weight.tare()
+  Weight.tare();
 
   pinMode(ledCharged, OUTPUT);
   pinMode(ledGoodBattery, OUTPUT);
@@ -135,11 +136,15 @@ void setup() {
 
 void loop() {
   // Falta colocar esses leds
-  if(voltage <= 12.6 || voltage >= 12.2) {
+  if(voltage > 12.6) {
+    digitalWrite(ledCharged, HIGH);
+    digitalWrite(ledGoodBattery, HIGH);
+    digitalWrite(ledBadBattery, HIGH);
+  } else if(voltage <= 12.6 && voltage >= 12.2) {
     digitalWrite(ledCharged, HIGH);
     digitalWrite(ledGoodBattery, LOW);
     digitalWrite(ledBadBattery, LOW);
-  } else if(voltage <= 12.1 || voltage >= 11.1) {
+  } else if(voltage <= 12.1 && voltage >= 11.1) {
     digitalWrite(ledCharged, LOW);
     digitalWrite(ledGoodBattery, HIGH);
     digitalWrite(ledBadBattery, LOW);
@@ -150,9 +155,19 @@ void loop() {
   }
 
   if(Serial.available()) {
-    char string = Serial.read()
-    if(string == 'W' || string = 'w') {
-      Serial.println(Weight.get_units(), 3)
+    char string = Serial.read();
+    if(string == 'W' || string == 'w') {
+      Serial.println(Weight.get_units(), 3);
+    } else if(string == 'E' || string == 'e') {
+      digitalWrite(ledCharged, HIGH);
+      digitalWrite(ledGoodBattery, HIGH);
+      digitalWrite(ledBadBattery, HIGH);
+      for (int i = 0 ; i < EEPROM.length() ; i++) {
+        EEPROM.write(i, 0);
+      }
+      digitalWrite(ledCharged, LOW);
+      digitalWrite(ledGoodBattery, LOW);
+      digitalWrite(ledBadBattery, LOW);
     }
   }
 }
