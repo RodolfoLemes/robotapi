@@ -13,7 +13,7 @@ class Encoder {
         this.distance = 0
         this.gpio = new Gpio(this.pin, {
             mode: Gpio.INPUT,
-            edge: Gpio.FALLING_EDGE
+            edge: Gpio.EITHER_EDGE,
         })
 
         this.initMode = false
@@ -22,16 +22,29 @@ class Encoder {
         this.threadRPM = setInterval(() => {
             this.RPM = ((this.cont / HOLES) / 1000) * 60
         }, 1000)
-
+        
+        this.time = 0
+        this.uau = false
         this.gpio.on('interrupt', (level, tick) => {
+            console.log((tick >> 0) - (this.time >> 0))
             if(level == 0) {
                 if(this.initMode) {
                     this.motor.shutdown()
                     this.initMode = false
                 } else {
-                    console.log(this.motor.motor + ' ' + tick)
-                    this.cont++
-                    this.setDistance()
+                    //console.log(this.motor.motor + ' ' + tick)
+                    if(!this.uau) {
+                        this.cont++
+                        this.time = tick
+                        this.setDistance()
+                        this.uau = true
+                    } else {
+                        if((tick >> 0) - (this.time >> 0) > 200000) {
+                            this.cont++
+                            this.time = tick
+                            this.setDistance()
+                        }
+                    }
                 }
             }
         })
@@ -56,6 +69,7 @@ class Encoder {
     reset() {
         this.cont = 0
         this.distance = 0
+        this.uau = false
     }
 
     initialPosition() {

@@ -25,7 +25,6 @@ class Arduino {
     startSerial() {
         const parser = this.port.pipe(new Readline({ delimiter: '\r\n'}))
         parser.on('data', data => {
-            console.log(data)
             if(data.includes('/')) {
                 let measures = data.split('/')
                 this.voltage = measures[0]

@@ -11,7 +11,7 @@ const ultrassonicB = new Ultrassonic(19, 26)    // Esquerda
 const ultrassonicC = new Ultrassonic(16, 20)    // Trás
 const ultrassonicD = new Ultrassonic(22, 21)    // Frente
 
-const encoderA = new Encoder(motorA, 17)
+const encoderA = new Encoder(motorA, 25)
 const encoderB = new Encoder(motorB, 18)
 
 const arduino = new Arduino()
