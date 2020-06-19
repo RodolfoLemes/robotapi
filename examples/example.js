@@ -16,6 +16,7 @@ var threadUltrassonic
 var threadSerial
 var threadEncoder
 var loop
+var antiMerda = false
 
 // Chamada da função principal
 main()
@@ -40,6 +41,7 @@ async function init() {
   console.log(response)
 
   if(response[0].data && response[1].data) {
+    await axios.get(url + 'motor/setPwmValue?pwmValueA=177&pwmValueB=100')
     //beginThreads()
     return true
   } else {
@@ -49,8 +51,8 @@ async function init() {
 
 async function motorControll() {
   let response = await axios.get(url + 'ultrassonic/getMeasure')
-  console.log(response.data)
   ultrassonicDistances = response.data.distances
+  
   // Comando dos motores
   if(checkForward(ultrassonicDistances)) {
     // Ir para frente
@@ -61,16 +63,40 @@ async function motorControll() {
     if(verifySide(ultrassonicDistances)) {
       // Virar para esquerda
       console.log('direita')
+      const encoderRequest = await axios.get(url + 'encoder/get?encoder=A')
+      var distanceInitial = encoderRequest.data.distance
       await axios.get(url + 'motor/turn?side=direita')
+      var distanceFinal = 0
+      while (distanceFinal - distanceInitial >= 11.78) {
+        if(antiMerda) {
+          break
+        }
+
+        const encoderRequest2 = await axios.get(url + 'encoder/get?encoder=A')
+        distanceFinal = encoderRequest2.data.distance
+      }
+      await axios.get(url + 'motor/shutdown')
     } else {
       // Virar para direita
       console.log('esquerda')
+      const encoderRequest = await axios.get(url + 'encoder/get?encoder=A')
+      var distanceInitial = encoderRequest.data.distance
       await axios.get(url + 'motor/turn?side=esquerda')
+      var distanceFinal = 0
+      while (distanceFinal - distanceInitial >= 11.78) {
+        if(antiMerda) {
+          break
+        }
+
+        const encoderRequest2 = await axios.get(url + 'encoder/get?encoder=A')
+        distanceFinal = encoderRequest2.data.distance
+      }
+      await axios.get(url + 'motor/shutdown')
     }
   }
 }
 
-function beginThreads() {
+/* function beginThreads() {
   // Inicia as threads para monitoração
 
   // Monitora as distâncias a cada 0.05 segundos
@@ -93,18 +119,20 @@ function beginThreads() {
     console.log(response.data)
   }, 1000);
 }
-
+*/
 // Funções auxiliares
 function checkForward(distances) {
-  return distances[0] > 25 && distances[1] > 25 && distances[3] > 23
+  return distances[0] > 30 && distances[1] > 30 && distances[3] > 35
 }
 
-function verifySide(distances) {
-  return distances[0] > distances[1]
+function verifySide() {
+  let value = Math.random()
+  return value >= 0.49 ? true : false
 }
 
 // Ativa quando for pressionado ctrl+c
 process.on('SIGINT', async function () {
+  antiMerda = true
   clearInterval(loop)
   clearInterval(threadUltrassonic)
   clearInterval(threadSerial)

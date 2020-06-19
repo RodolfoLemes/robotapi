@@ -29,6 +29,8 @@ process.on('SIGINT', function () {
     ultrassonicB.stop()
     ultrassonicC.stop()
     ultrassonicD.stop()
+    encoderA.stop()
+    encoderB.stop()
     arduino.closeSerial()
     console.log('Servidor desligado')
     process.exit(); //exit completely

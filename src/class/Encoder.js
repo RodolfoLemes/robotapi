@@ -3,6 +3,7 @@ const Gpio = require('pigpio').Gpio
 // Considerando um Encoder de 10 cm com 12 furos
 // Roda com 15 cm de diametro
 const DISTANCE = 3.927
+const HOLES = 12
 
 class Encoder {
     constructor(motor, pin) {
@@ -16,6 +17,12 @@ class Encoder {
         })
 
         this.initMode = false
+        this.RPM = 0
+
+        this.threadRPM = setInterval(() => {
+            this.RPM = ((this.cont / HOLES) / 1000) * 60
+        }, 1000)
+
         this.gpio.on('interrupt', (level, tick) => {
             if(level == 0) {
                 if(this.initMode) {
@@ -57,6 +64,10 @@ class Encoder {
         this.reset()
         this.initMode = true
         this.motor.forward()
+    }
+
+    stop() {
+        clearInterval(this.threadRPM)
     }
 
 }

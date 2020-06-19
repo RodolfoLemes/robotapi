@@ -29,6 +29,7 @@ float value;
 double Voltage = 0;
 double Amps = 0;
 boolean x = false;
+boolean cleaning = false;
 String measuresSaved;
 
 // Functions EEPROM
@@ -94,12 +95,16 @@ void measure(void) {
   value = averageAnalogRead(pinVoltageMeasure);
   voltage = value / 1024.0 * 12.60;
   current = currentMeasure();
+  if(current < 0) {
+    current = 0;
+  }
   capacity = capacity + current / 3600;
   time++;
 
   String measures = String(capacity) + '/' + String(time);
   String measuresSerial = String(voltage) + '/' + String(current) + '/' + String(capacity) + '/' + String(time);
   writeString(0, measures);
+  Serial.println(measures);
   Serial.println(measuresSerial);
 }
 
@@ -108,7 +113,9 @@ ISR(TIMER1_OVF_vect) {
   TCNT1 = 0x0BDC;
   x = !x;
 
-  measure();
+  if(!cleaning) {
+     measure();
+  }
 }
 
 // SETUP --- LOOP //
@@ -159,15 +166,19 @@ void loop() {
     if(string == 'W' || string == 'w') {
       Serial.println(Weight.get_units(), 3);
     } else if(string == 'E' || string == 'e') {
+      cleaning = true;
       digitalWrite(ledCharged, HIGH);
       digitalWrite(ledGoodBattery, HIGH);
       digitalWrite(ledBadBattery, HIGH);
       for (int i = 0 ; i < EEPROM.length() ; i++) {
         EEPROM.write(i, 0);
       }
+      capacity = 0;
+      time = 0;
       digitalWrite(ledCharged, LOW);
       digitalWrite(ledGoodBattery, LOW);
       digitalWrite(ledBadBattery, LOW);
+      cleaning = false;
     }
   }
 }

@@ -15,6 +15,7 @@ class Motor {
     setPwmValue(pwmValue) {
         if(pwmValue > 0 && pwmValue < 256) {
             this.pwmValue = pwmValue
+            this.gpioPwm.pwmWrite(this.pwmValue)
         }
     }
 
