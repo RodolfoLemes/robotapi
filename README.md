@@ -1,6 +1,8 @@
 # robotapi
 API para controle da base robótica :octocat:
 
+![Schematic](Schematic_robotapi.png)
+
 ### Afazeres:
 
 - [ ] Colocar LEDs indicadores, controlados pelo *Arduino*, para o nível de tensão da bateria.
